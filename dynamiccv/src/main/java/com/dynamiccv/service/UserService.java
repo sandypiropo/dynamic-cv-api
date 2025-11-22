@@ -16,6 +16,12 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+    public UserDTO getUserById(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
+        return mapToDTO(user);
+    }
+
     public UserDTO createUser(UserDTO userDTO) {
         User user = mapToEntity(userDTO);
         User savedUser = userRepository.save(user);
