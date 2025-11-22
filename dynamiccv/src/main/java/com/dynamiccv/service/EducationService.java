@@ -42,13 +42,19 @@ public class EducationService {
         return mapToDTO(education);
     }
 
-    public EducationDTO createEducation(EducationDTO dto) {
+    public EducationDTO createEducation(Long userId, EducationDTO dto) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
+
         Education education = mapToEntity(dto);
+        education.setUser(user); // associa ao usuário
+
         Education saved = educationRepository.save(education);
         return mapToDTO(saved);
     }
 
-    public EducationDTO updateEducation(Long id, EducationDTO dto) {
+
+    public EducationDTO updateEducation(Long id, Long userId, EducationDTO dto) {
         Education education = educationRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Education not found with id: " + id));
 
@@ -57,14 +63,23 @@ public class EducationService {
         education.setStartYear(dto.getStartYear());
         education.setEndYear(dto.getEndYear());
 
-        if (dto.getUserId() != null) {
-            User user = userRepository.findById(dto.getUserId())
-                    .orElseThrow(() -> new RuntimeException("User not found with id: " + dto.getUserId()));
-            education.setUser(user);
-        }
+        // associa ao usuário pelo parâmetro
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
+        education.setUser(user);
 
         Education updated = educationRepository.save(education);
-        return mapToDTO(updated);
+        return mapToDTO(updated, user); // opcionalmente, passa user para setar userId no DTO
+    }
+
+    private EducationDTO mapToDTO(Education entity, User user) {
+        EducationDTO dto = new EducationDTO();
+        dto.setId(entity.getId());
+        dto.setCourseName(entity.getCourseName());
+        dto.setInstitution(entity.getInstitution());
+        dto.setStartYear(entity.getStartYear());
+        dto.setEndYear(entity.getEndYear());
+        return dto;
     }
 
     public void deleteEducation(Long id) {
@@ -74,6 +89,7 @@ public class EducationService {
         educationRepository.deleteById(id);
     }
 
+    // ===== Mapeamentos =====
     private EducationDTO mapToDTO(Education entity) {
         EducationDTO dto = new EducationDTO();
         dto.setId(entity.getId());
@@ -81,7 +97,6 @@ public class EducationService {
         dto.setInstitution(entity.getInstitution());
         dto.setStartYear(entity.getStartYear());
         dto.setEndYear(entity.getEndYear());
-        dto.setUserId(entity.getUser() != null ? entity.getUser().getId() : null);
         return dto;
     }
 
@@ -91,13 +106,6 @@ public class EducationService {
         education.setInstitution(dto.getInstitution());
         education.setStartYear(dto.getStartYear());
         education.setEndYear(dto.getEndYear());
-
-        if (dto.getUserId() != null) {
-            User user = userRepository.findById(dto.getUserId())
-                    .orElseThrow(() -> new RuntimeException("User not found with id: " + dto.getUserId()));
-            education.setUser(user);
-        }
-
         return education;
     }
 }

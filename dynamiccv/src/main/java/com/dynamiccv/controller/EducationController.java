@@ -30,16 +30,20 @@ public class EducationController {
     }
 
     @PostMapping
-    public ResponseEntity<EducationDTO> createEducation(@Valid @RequestBody EducationDTO dto) {
-        EducationDTO created = educationService.createEducation(dto);
+    public ResponseEntity<EducationDTO> createEducation(
+            @RequestParam Long userId,
+            @Valid @RequestBody EducationDTO dto) {
+        EducationDTO created = educationService.createEducation(userId, dto);
         return ResponseEntity.ok(created);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<EducationDTO> updateEducation(
             @PathVariable Long id,
+            @RequestParam Long userId,
             @Valid @RequestBody EducationDTO dto) {
-        EducationDTO updated = educationService.updateEducation(id, dto);
+
+        EducationDTO updated = educationService.updateEducation(id, userId, dto);
         return ResponseEntity.ok(updated);
     }
 

@@ -1,6 +1,7 @@
 package com.dynamiccv.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Getter
@@ -22,15 +23,5 @@ public class EducationDTO {
 
     @NotBlank(message = "{education.endYear.required}")
     private String endYear;
-
-    private Long userId;
-
-    public EducationDTO(Long id, String courseName, String institution, String startYear, String endYear) {
-        this.id = id;
-        this.courseName = courseName;
-        this.institution = institution;
-        this.startYear = startYear;
-        this.endYear = endYear;
-    }
 
 }
