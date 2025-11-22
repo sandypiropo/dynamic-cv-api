@@ -1,6 +1,6 @@
 package com.dynamiccv.service;
 
-import com.dynamiccv.dto.ExperienceDTO;
+import com.dynamiccv.dto.ExperienceUserViewDTO;
 import com.dynamiccv.dto.UserDTO;
 import com.dynamiccv.model.User;
 import com.dynamiccv.repository.UserRepository;
@@ -68,13 +68,13 @@ public class UserService {
         dto.setExperiences(
                 entity.getExperiences()
                         .stream()
-                        .map(exp -> new ExperienceDTO(
+                        .map(exp -> new ExperienceUserViewDTO(
                                 exp.getId(),
                                 exp.getCompanyName(),
                                 exp.getPosition(),
                                 exp.getPeriod(),
                                 exp.getDescription(),
-                                exp.getAchievements() // aqui não passamos o userId
+                                exp.getAchievements()
                         ))
                         .toList()
         );

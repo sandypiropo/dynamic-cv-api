@@ -44,7 +44,7 @@ public class UserDTO {
     private List<String> hardSkills = new ArrayList<>();
 
     private List<String> softSkills = new ArrayList<>();
-    private List<ExperienceDTO> experiences = new ArrayList<>();
+    private List<ExperienceUserViewDTO> experiences = new ArrayList<>();
     private List<EducationDTO> education = new ArrayList<>();
     private List<CourseDTO> courses = new ArrayList<>();
     private List<String> languages = new ArrayList<>();
