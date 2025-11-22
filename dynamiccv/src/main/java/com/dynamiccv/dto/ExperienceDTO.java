@@ -1,23 +1,16 @@
-package com.dynamiccv.model;
+package com.dynamiccv.dto;
 
-import jakarta.persistence.*;
-        import jakarta.validation.constraints.NotBlank;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
-@Entity
-@Table(name = "experiences")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class Experience {
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class ExperienceDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    // Campos obrigatórios
     @NotBlank(message = "{experience.companyName.required}")
     private String companyName;
 
@@ -30,6 +23,5 @@ public class Experience {
     @NotBlank(message = "{experience.description.required}")
     private String description;
 
-    // Campo opcional
-    private String achievements;
+    private String achievements; // opcional
 }
