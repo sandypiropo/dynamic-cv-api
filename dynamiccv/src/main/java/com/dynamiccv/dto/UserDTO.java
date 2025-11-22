@@ -13,6 +13,8 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserDTO {
 
+    private Long id;
+
     @NotBlank(message = "{user.name.required}")
     private String fullName;
 

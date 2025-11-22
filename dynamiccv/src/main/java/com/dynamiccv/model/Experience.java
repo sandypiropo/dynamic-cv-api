@@ -17,7 +17,6 @@ public class Experience {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Campos obrigatórios
     @NotBlank(message = "{experience.companyName.required}")
     private String companyName;
 
@@ -25,11 +24,14 @@ public class Experience {
     private String position;
 
     @NotBlank(message = "{experience.period.required}")
-    private String period; // ex: jan 2024 — atual
+    private String period;
 
     @NotBlank(message = "{experience.description.required}")
     private String description;
 
-    // Campo opcional
     private String achievements;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 }

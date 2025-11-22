@@ -9,6 +9,8 @@ import lombok.*;
 @AllArgsConstructor
 public class CourseDTO {
 
+    private Long id;
+
     @NotBlank(message = "{course.courseName.required}")
     private String courseName;
 

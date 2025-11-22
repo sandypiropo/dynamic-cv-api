@@ -11,6 +11,8 @@ import lombok.*;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ExperienceDTO {
 
+    private Long id;
+
     @NotBlank(message = "{experience.companyName.required}")
     private String companyName;
 
@@ -18,10 +20,22 @@ public class ExperienceDTO {
     private String position;
 
     @NotBlank(message = "{experience.period.required}")
-    private String period; // ex: jan 2024 — atual
+    private String period;
 
     @NotBlank(message = "{experience.description.required}")
     private String description;
 
-    private String achievements; // opcional
+    private String achievements;
+
+    private Long userId;
+
+    public ExperienceDTO(Long id, String companyName, String position, String period,
+                         String description, String achievements) {
+        this.id = id;
+        this.companyName = companyName;
+        this.position = position;
+        this.period = period;
+        this.description = description;
+        this.achievements = achievements;
+    }
 }

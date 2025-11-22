@@ -1,5 +1,6 @@
 package com.dynamiccv.service;
 
+import com.dynamiccv.dto.ExperienceDTO;
 import com.dynamiccv.dto.UserDTO;
 import com.dynamiccv.model.User;
 import com.dynamiccv.repository.UserRepository;
@@ -19,8 +20,10 @@ public class UserService {
     public UserDTO createUser(UserDTO userDTO) {
         User user = mapToEntity(userDTO);
         User savedUser = userRepository.save(user);
+        System.out.println("ID gerado: " + savedUser.getId());
         return mapToDTO(savedUser);
     }
+
 
     public List<UserDTO> getAllUsers() {
         return userRepository.findAll()
@@ -49,6 +52,7 @@ public class UserService {
 
     private UserDTO mapToDTO(User entity) {
         UserDTO dto = new UserDTO();
+        dto.setId(entity.getId());
         dto.setFullName(entity.getFullName());
         dto.setEmail(entity.getEmail());
         dto.setPhone(entity.getPhone());
@@ -60,8 +64,51 @@ public class UserService {
         dto.setObjective(entity.getObjective());
         dto.setHardSkills(entity.getHardSkills());
         dto.setSoftSkills(entity.getSoftSkills());
-        // TODO: mapear experiences, education, courses
-        dto.setLanguages(entity.getLanguages());
+
+        dto.setExperiences(
+                entity.getExperiences()
+                        .stream()
+                        .map(exp -> new ExperienceDTO(
+                                exp.getId(),
+                                exp.getCompanyName(),
+                                exp.getPosition(),
+                                exp.getPeriod(),
+                                exp.getDescription(),
+                                exp.getAchievements() // aqui não passamos o userId
+                        ))
+                        .toList()
+        );
+
         return dto;
     }
+
+    public UserDTO updateUser(Long id, UserDTO userDTO) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
+
+        user.setFullName(userDTO.getFullName());
+        user.setEmail(userDTO.getEmail());
+        user.setPhone(userDTO.getPhone());
+        user.setCity(userDTO.getCity());
+        user.setState(userDTO.getState());
+        user.setCountry(userDTO.getCountry());
+        user.setLinkedin(userDTO.getLinkedin());
+        user.setGithub(userDTO.getGithub());
+        user.setObjective(userDTO.getObjective());
+        user.setHardSkills(userDTO.getHardSkills());
+        user.setSoftSkills(userDTO.getSoftSkills());
+        // TODO: mapear experiences, education, courses
+        user.setLanguages(userDTO.getLanguages());
+
+        User updatedUser = userRepository.save(user);
+        return mapToDTO(updatedUser);
+    }
+
+    public void deleteUser(Long id) {
+        if (!userRepository.existsById(id)) {
+            throw new RuntimeException("User not found with id: " + id);
+        }
+        userRepository.deleteById(id);
+    }
+
 }
